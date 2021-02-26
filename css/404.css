@@ -1,0 +1,20 @@
+.body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #00AFF9;
+    height: 100vh;
+    margin: 0;
+    color: white;
+}
+
+.h1 {
+    margin: 2em 3rem;
+    font: 4em Roboto;
+}
+
+.p {
+    margin: .2em 3rem;
+    font: 2em Roboto;
+}
