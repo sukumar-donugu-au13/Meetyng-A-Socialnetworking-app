@@ -38,11 +38,13 @@ router.post("/", async (req, res, next) => {
 
         await user.save();
 
-        res.redirect("/");
+        // console.log(user);
+        req.session.user = user;
+        return res.redirect("/");
 
     } catch (err) {
         if (err.isJoi === true) {
-            console.log(err);
+            // console.log(err);
             var alert = err.message;
             return res.render("register", { alert });
         }

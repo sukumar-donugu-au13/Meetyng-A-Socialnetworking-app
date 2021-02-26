@@ -3,11 +3,16 @@ const express = require("express");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const hbs = require("hbs");
+const createError = require("http-errors");
+const session = require("express-session");
+
 require("dotenv").config();
 require("./helpers/MongoConnect");
 
 const loginRoute = require("./routes/LoginRoute");
 const registerRoute = require("./routes/RegisterRoute");
+const logoutRoute = require("./routes/logoutRoute");
+const requireLogin = require("./Middleware");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -23,9 +28,16 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
-app.get("/", (req, res, next) => {
+app.use(session({
+    secret: process.env.SECRET_KEY,
+    resave: true,
+    saveUninitialized: false
+}))
+
+app.get("/", requireLogin, (req, res, next) => {
     var payload = {
-        pageTitle: "Home"
+        pageTitle: "Home",
+        userLoggedIn: req.session.user
     }
 
     res.status(200).render("home", payload)
@@ -33,6 +45,7 @@ app.get("/", (req, res, next) => {
 
 app.use("/login", loginRoute);
 app.use("/register", registerRoute);
+app.use("/logout", logoutRoute);
 
 app.use(async (req, res, next) => {
     next(createError.NotFound());

@@ -1,13 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
     {{> head}}
+    <link rel="stylesheet" href="/css/login.css">
+    <title>Login</title>
+    </head>
     <body class="body">
         <div class="wrapper">
             <div class="loginContainer">
                 <h1>Login</h1>
+
+                {{#if alert}}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ alert }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                        </button>
+                    </div>
+                {{/if}}
+
                 <form method="POST" onsubmit="submit">
-                    <input type="text" name="username" placeholder="email or username" required>
-                    <input type="password" name="password" placeholder="password" required>
+                    <input type="text" name="logUsername" placeholder="email or username" >
+                    <input type="password" name="logPassword" placeholder="password" >
                     <button type="submit">Submit</button>
                 </form>
                 <a href="/register">Create an Account</a>
