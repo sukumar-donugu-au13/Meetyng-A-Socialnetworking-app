@@ -1,0 +1,12 @@
+
+{{#if isSelected }}
+    <a href="/profile/{{ user.username }}" class="tab active">
+        <span>Posts</span>
+    </a>
+{{/if}}
+
+{{#unless isSelected }}
+    <a href="/profile/{{ user.username }}/replies" class="tab">
+        <span>Replies</span>
+    </a>
+{{/unless}}

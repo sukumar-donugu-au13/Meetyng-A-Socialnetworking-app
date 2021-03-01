@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {{> head }}
+    <link rel="stylesheet" href="/css/main.css">
+    <title>{{ pageTitle }}</title>
+</head>
+<body class="body">
+    <div class="wrapper">
+        <div class="row">
+            <nav class="col-2">
+                <a class="blue" href="/"><i class="fab fa-meetup"></i></a>
+                <a href="/"><i class="fas fa-home"></i></a>
+                <a href="/search"><i class="fas fa-search"></i></a>
+                <a href="/profile"><i class="fas fa-user"></i></a>
+                <a href="/logout"><i class="fas fa-sign-out-alt"></i></a>
+            </nav>
+
+            <div class="mainSectionContainer col-10 col-md-8 col-lg-6">
+                <div class="titleContainer">
+                    <h1>{{ pageTitle }}</h1>
+                </div>
+                {{#unless profileUser }}
+                    <span class="errorMessage">Check the url you are trying to access</span>
+                {{/unless}}
+                
+                <div class="profileHeaderContainer">
+                    <div class="coverPhotoContainer">
+
+                        <div class="userImageContainer">
+                            <img src={{ profileUser.profilePic }} alt="User profile image">
+                        </div>
+                    </div>
+                    <div class="profileButtonsContainer">
+                        {{#when profileUser._id "noteq" userLoggedIn._id }}
+                            <a class="profileButton" href="/messages{{ profileUser._id }}">
+                                <i class="fas fa-envelope"></i>
+                            </a>
+                            {{> createFollowButton user=profileUser isFollowing=true }}
+                        {{/when}}
+                    </div>
+                    <div class="userDetailsContainer">
+                        <span class="displayName">
+                            {{ profileUser.firstName }} {{ profileUser.lastName }}
+                        </span>
+                        <span class="username">
+                            @{{ profileUser.username }}
+                        </span>
+                        <span class="description">
+                            {{ profileUser.description }}
+                        </span>
+
+                        <div class="followersContainer">
+                            <a href="/profile/{{ profileUser.username }}/following">
+                                <span class="value">0</span>
+                                <span>Following</span>
+                            </a>
+                            <a href="/profile/{{ profileUser.username }}/followers">
+                                <span class="value">0</span>
+                                <span>Followers</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tabsContainer">
+                    {{#if true }}
+                        <a href="/profile/{{ profileUser.username }}" class="tab active">
+                            <span>Posts</span>
+                        </a>
+                    {{/if}}
+
+                    {{#unless false }}
+                        <a href="/profile/{{ profileUser.username }}/replies" class="tab">
+                            <span>Replies</span>
+                        </a>
+                    {{/unless}}
+                </div>
+            </div>
+
+            <div class="col-md-2 col-lg-4">
+                <span>Third column</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://kit.fontawesome.com/928db4b75b.js" crossorigin="anonymous"></script>
+    {{> footer }}
+
+    <script src="/js/common.js"></script>
+</body>
+</html>
+
+{{!-- {{> createTab user=profileUser isSelected=true }} --}}

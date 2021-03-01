@@ -12,6 +12,7 @@ require("./helpers/MongoConnect");
 const loginRoute = require("./routes/LoginRoute");
 const registerRoute = require("./routes/RegisterRoute");
 const logoutRoute = require("./routes/logoutRoute");
+const profileRoute = require("./routes/profileRoute");
 const requireLogin = require("./Middleware");
 
 const app = express();
@@ -34,6 +35,23 @@ app.use(session({
     saveUninitialized: false
 }))
 
+hbs.registerHelper("when", (operand_1, operator, operand_2, options) => {
+    let operators = {                     //  {{#when <operand1> 'eq' <operand2>}}
+        'eq': (l, r) => l == r,              //  {{/when}}
+        'noteq': (l, r) => l != r,
+        'gt': (l, r) => (+l) > (+r),                        // {{#when var1 'eq' var2}}
+        'gteq': (l, r) => ((+l) > (+r)) || (l == r),        //               eq
+        'lt': (l, r) => (+l) < (+r),                        // {{else when var1 'gt' var2}}
+        'lteq': (l, r) => ((+l) < (+r)) || (l == r),        //               gt
+        'or': (l, r) => l || r,                             // {{else}}
+        'and': (l, r) => l && r,                            //               lt
+        '%': (l, r) => (l % r) === 0                        // {{/when}}
+    }
+    let result = operators[operator](operand_1, operand_2);
+    if (result) return options.fn(this);
+    return options.inverse(this);
+});
+
 app.get("/", requireLogin, (req, res, next) => {
     var payload = {
         pageTitle: "Home",
@@ -46,6 +64,7 @@ app.get("/", requireLogin, (req, res, next) => {
 app.use("/login", loginRoute);
 app.use("/register", registerRoute);
 app.use("/logout", logoutRoute);
+app.use("/profile", requireLogin, profileRoute);
 
 app.use(async (req, res, next) => {
     next(createError.NotFound());

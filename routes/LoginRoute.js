@@ -34,6 +34,9 @@ router.post("/", async (req, res, next) => {
             req.session.user = user;
 
             return res.redirect("/");
+        } else {
+            var alert = "Username or password incorrect";
+            return res.render("login", { alert });
         }
 
     } catch (err) {
