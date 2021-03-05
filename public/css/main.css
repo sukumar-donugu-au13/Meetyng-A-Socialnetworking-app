@@ -66,6 +66,16 @@ nav a:hover {
     border-radius: 50%;
 }
 
+button {
+    background-color: transparent;
+    border: none;
+    color: var(--greyButtonText);
+}
+
+button i, button span {
+    pointer-events: none;
+}
+
 .mainSectionContainer {
     padding: 0;
     border-left: 1px solid var(--lightGray);
@@ -92,6 +102,16 @@ nav a:hover {
     padding: var(--spacing);
     border-bottom: 10px solid rgb(230, 236, 240);
     flex-shrink: 0;
+}
+
+.modal .postFormContainer {
+    border: none;
+    padding: 0;
+    padding-top: var(--spacing);
+}
+
+.modal .post {
+    padding: 0 0 var(--spacing) 0;
 }
 
 .userImageContainer {
@@ -127,6 +147,106 @@ nav a:hover {
 
 #submitPostButton:disabled {
     background-color: var(--blueLight);
+}
+
+.post {
+    display: flex;
+    flex-direction: column;
+    padding: var(--spacing);
+    cursor: pointer;
+    border-bottom: 1px solid var(--lightGray);
+    flex-shrink: 0;
+}
+
+.mainContentContainer {
+    flex: 1;
+    display: flex;
+}
+
+.postContentContainer {
+    padding-left: var(--spacing);
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.username, .date {
+    color: var(--greyText);
+}
+
+.displayName {
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.postFooter {
+    display: flex;
+    align-items: center;
+}
+
+.postFooter .postButtonContainer {
+    flex: 1;
+    display: flex;
+}
+
+.postFooter .postButtonContainer button {
+    padding: 2px 5px;
+}
+
+.header a:hover {
+    text-decoration: underline;
+}
+
+.header a, .header span {
+    padding-right: 5px;
+}
+
+.postButtonContainer button:hover {
+    background-color: #d4edff;
+    color: var(--blue);
+    border-radius: 50%;
+}
+
+.postButtonContainer.red button.active {
+    color: var(--red);
+}
+
+.postButtonContainer.red button:hover {
+    color: var(--red);
+    background-color: var(--redBackground);
+}
+
+.postButtonContainer.green button.active {
+    color: var(--green);
+}
+
+.postButtonContainer.green button:hover {
+    color: var(--green);
+    background-color: var(--greenBackground);
+}
+
+.postActionContainer {
+    padding-left: 35px;
+    font-size: 13px;
+    color: var(--greyText);
+    margin-bottom: 5px;
+}
+
+.postActionContainer a {
+    text-decoration: none;
+}
+
+.postActionContainer a:hover {
+    text-decoration: underline;
+}
+
+.replyFlag {
+    margin-bottom: 5px;
+}
+
+.replyFlag a {
+    color: var(--blue);
+    text-decoration: none;
 }
 
 .errorMessage {

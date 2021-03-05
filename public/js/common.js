@@ -1,8 +1,10 @@
-$("#postTextarea").keyup(event => {
+$("#postTextarea, #replyTextarea").keyup(event => {
     var textbox = $(event.target);
     var value = textbox.val().trim();
 
-    var submitButton = $("#submitPostButton");
+    var isModal = textbox.parents(".modal").length == 1;
+
+    var submitButton = isModal ? $("#submitReplyButton") : $("#submitPostButton");
 
     if (submitButton.length == 0) return console.log("No submit button found");
 
@@ -13,3 +15,249 @@ $("#postTextarea").keyup(event => {
 
     submitButton.prop("disabled", false);
 })
+
+$("#submitPostButton, #submitReplyButton").click(event => {
+    var button = $(event.target);
+
+    var isModal = button.parents(".modal").length == 1;
+    var textbox = isModal ? $("#replyTextarea") : $("#postTextarea");
+
+    var data = {
+        content: textbox.val()
+    }
+
+    if (isModal) {
+        var id = button.data().id;
+        if (id == null) return console.log("Button id is null");
+        data.replyTo = id;
+    }
+
+    $.post("/api/posts/", data, (postData, status, xhr) => {
+
+        if (postData.replyTo) {
+            location.reload();
+        }
+
+        var html = createPostHtml(postData);
+        $(".postsContainer").prepend(html);
+        textbox.val("");
+        button.prop("disabled", true);
+    })
+})
+
+$(document).on("click", ".likeButton", (event) => {
+    var button = $(event.target);
+    var postId = getPostIdFromElement(button);
+
+    if (postId === undefined) return;
+
+    $.ajax({
+        url: `/api/posts/${postId}/like`,
+        type: "PUT",
+        success: (postData) => {
+            button.find("span").text(postData.likes.length || "");
+
+            if (postData.likes.includes(userLoggedIn._id)) {
+                button.addClass("active");
+            } else {
+                button.removeClass("active");
+            }
+        }
+    })
+})
+
+$(document).on("click", ".shareButton", (event) => {
+    var button = $(event.target);
+    var postId = getPostIdFromElement(button);
+
+    if (postId === undefined) return;
+
+    $.ajax({
+        url: `/api/posts/${postId}/share`,
+        type: "POST",
+        success: (postData) => {
+            button.find("span").text(postData.shareUsers.length || "");
+
+            if (postData.shareUsers.includes(userLoggedIn._id)) {
+                button.addClass("active");
+            } else {
+                button.removeClass("active");
+            }
+        }
+    })
+})
+
+$(document).on("click", ".commentButton", (event) => {
+    var button = $(event.target);
+    var postId = getPostIdFromElement(button);
+    $("#submitReplyButton").data("id", postId);
+
+    $.get(`/api/posts/${postId}`, results => {
+        // console.log(results);
+        outputPosts(results, $("#originalPostContainer"));
+    })
+
+    // console.log(postId);
+    if (postId === undefined) return;
+
+    $('#replyModal').modal('show')
+})
+
+$('#replyModal').on('shown.bs.modal', (event) => {
+    $("#closeButton, .close").click(() => {
+        $('#replyModal').modal('hide')
+    })
+
+    // var button = $(event.ralatedTarget);
+    // var postId = getPostIdFromElement(button);
+
+    // $.get(`/api/posts/${postId}`, results => {
+    //     console.log(results);
+    // })
+})
+
+$('#replyModal').on('hidden.bs.modal', (event) => {
+    $("#originalPostContainer").html("");
+})
+
+function getPostIdFromElement(element) {
+    var isRoot = element.hasClass("post");
+    var rootElement = isRoot ? element : element.closest(".post");
+    var postId = rootElement.data().id;
+
+    if (postId === undefined) return console.log("Post id undefined");
+
+    return postId;
+}
+
+function createPostHtml(postData) {
+    var isShare = postData.shareData !== undefined;
+    var shareBy = isShare ? postData.postedBy.username : null;
+    postData = isShare ? postData.shareData : postData;
+
+    var postedBy = postData.postedBy;
+
+    var displayName = postedBy.firstName + " " + postedBy.lastName;
+    var timestamp = timeDifference(new Date(), new Date(postData.createdAt));
+
+    var likeButtonActiveClass = postData.likes.includes(userLoggedIn._id) ? "active" : "";
+    var shareButtonActiveClass = postData.shareUsers.includes(userLoggedIn._id) ? "active" : "";
+
+    var shareText = "";
+    if (isShare) {
+        shareText = `<span>
+                        <i class="fas fa-share"></i>
+                        Shared By <a href="/profile/${shareBy}">@${shareBy}</a>
+                    </span>`
+    }
+
+    var replyFlag = "";
+    if (postData.replyTo) {
+        if (!postData.replyTo._id) {
+            return console.log("Reply to is not populated");
+        } else if (!postData.replyTo.postedBy._id) {
+            return console.log("Posted by is not populated");
+        }
+
+        var replyToUsername = postData.replyTo.postedBy.username;
+        replyFlag = `<div class="replyFlag">
+                        Replying to <a href="/profile/${replyToUsername}">@${replyToUsername}</a>
+                    </div>`
+    }
+
+    return `<div class="post" data-id="${postData._id}">
+                <div class="postActionContainer">
+                    ${shareText}
+                </div>
+                <div class="mainContentContainer">
+                    <div class="userImageContainer">
+                        <img src="${postedBy.profilePic}">
+                    </div>
+                    <div class="postContentContainer">
+                        <div class="header">
+                            <a href="/profile/${postedBy.username} class="displayName">${displayName}</a>
+                            <span class="username">@${postedBy.username}</span>
+                            <span class="date">${timestamp}</span>
+                        </div>
+                        ${replyFlag}
+                        <div class="postBody">
+                            <span>${postData.content}</span>
+                        </div>
+                        <div class="postFooter">
+                            <div class="postButtonContainer">
+                                <button type="button" class="commentButton" data-toggle="modal" data-target="#replyModal">
+                                    <i class="far fa-comment"></i>
+                                </button>
+                            </div>
+                            <div class="postButtonContainer green">
+                                <button class="shareButton ${shareButtonActiveClass}">
+                                    <i class="fas fa-share"></i>
+                                    <span>${postData.shareUsers.length || ""}</span>
+                                </button>
+                            </div>
+                            <div class="postButtonContainer red">
+                                <button class="likeButton ${likeButtonActiveClass}">
+                                    <i class="far fa-heart"></i>
+                                    <span>${postData.likes.length || ""}</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+}
+
+function timeDifference(current, previous) {
+
+    var msPerMinute = 60 * 1000;
+    var msPerHour = msPerMinute * 60;
+    var msPerDay = msPerHour * 24;
+    var msPerMonth = msPerDay * 30;
+    var msPerYear = msPerDay * 365;
+
+    var elapsed = current - previous;
+
+    if (elapsed < msPerMinute) {
+        if (elapsed / 1000 < 30) return "Just now";
+
+        return Math.round(elapsed / 1000) + ' seconds ago';
+    }
+
+    else if (elapsed < msPerHour) {
+        return Math.round(elapsed / msPerMinute) + ' minutes ago';
+    }
+
+    else if (elapsed < msPerDay) {
+        return Math.round(elapsed / msPerHour) + ' hours ago';
+    }
+
+    else if (elapsed < msPerMonth) {
+        return Math.round(elapsed / msPerDay) + ' days ago';
+    }
+
+    else if (elapsed < msPerYear) {
+        return Math.round(elapsed / msPerMonth) + ' months ago';
+    }
+
+    else {
+        return Math.round(elapsed / msPerYear) + ' years ago';
+    }
+}
+
+function outputPosts(results, container) {
+    container.html("");
+
+    if (!Array.isArray(results)) {
+        results = [results];
+    }
+
+    results.forEach(result => {
+        var html = createPostHtml(result);
+        container.append(html);
+    });
+
+    if (results.length == 0) {
+        container.append("<span class='noResults'>Nothing to show</span>");
+    }
+}
+

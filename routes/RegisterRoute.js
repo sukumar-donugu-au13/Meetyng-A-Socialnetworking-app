@@ -2,7 +2,7 @@ const express = require("express");
 
 const router = express.Router();
 
-const User = require("../schema/User");
+const User = require("../schema/UserSchema");
 const { schema } = require("../validation/UserValidation");
 
 router.get("/", (req, res) => {

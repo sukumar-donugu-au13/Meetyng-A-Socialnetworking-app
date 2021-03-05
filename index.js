@@ -12,6 +12,8 @@ require("./helpers/MongoConnect");
 const loginRoute = require("./routes/LoginRoute");
 const registerRoute = require("./routes/RegisterRoute");
 const logoutRoute = require("./routes/logoutRoute");
+
+const postApiRoute = require("./routes/api/posts");
 const profileRoute = require("./routes/profileRoute");
 const requireLogin = require("./Middleware");
 
@@ -52,19 +54,22 @@ hbs.registerHelper("when", (operand_1, operator, operand_2, options) => {
     return options.inverse(this);
 });
 
+app.use("/login", loginRoute);
+app.use("/register", registerRoute);
+app.use("/logout", logoutRoute);
+
+app.use("/api/posts", postApiRoute);
+app.use("/profile", requireLogin, profileRoute);
+
 app.get("/", requireLogin, (req, res, next) => {
     var payload = {
         pageTitle: "Home",
-        userLoggedIn: req.session.user
+        userLoggedIn: req.session.user,
+        userLoggedInJs: JSON.stringify(req.session.user)
     }
 
     res.status(200).render("home", payload)
 });
-
-app.use("/login", loginRoute);
-app.use("/register", registerRoute);
-app.use("/logout", logoutRoute);
-app.use("/profile", requireLogin, profileRoute);
 
 app.use(async (req, res, next) => {
     next(createError.NotFound());

@@ -1,7 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
 
-const User = require("../schema/User");
+const User = require("../schema/UserSchema");
 const { logSchema } = require("../validation/loginValidation");
 
 const router = express.Router()
@@ -45,8 +45,8 @@ router.post("/", async (req, res, next) => {
             var alert = err.message;
             return res.render("login", { alert });
         }
-        console.log(err);
-        // next(err)
+        // console.log(err);
+        next(err)
     }
 })
 

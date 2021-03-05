@@ -1,14 +1,16 @@
 const express = require("express");
 
-const User = require("../schema/User");
-
 const router = express.Router()
 
 router.get("/", (req, res, next) => {
-    if (req.session) {
-        req.session.destroy(() => {
-            res.redirect("/login");
-        });
+    try {
+        if (req.session) {
+            req.session.destroy(() => {
+                res.redirect("/login");
+            });
+        }
+    } catch (err) {
+        next(err);
     }
 })
 
