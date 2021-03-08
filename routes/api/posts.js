@@ -9,6 +9,7 @@ router.get("/", async (req, res, next) => {
     try {
         var result = await getPosts({});
 
+        // console.log(result);
         res.status(200).send(result);
     } catch (err) {
         console.log(err);

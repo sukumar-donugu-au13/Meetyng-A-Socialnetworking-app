@@ -10,7 +10,8 @@ router.get("/", (req, res) => {
         pageTitle: req.session.user.username,
         userLoggedIn: req.session.user,
         userLoggedInJS: JSON.stringify(req.session.user),
-        profileUser: req.session.user
+        profileUser: req.session.user,
+        userId: req.session.user._id
     }
 
     res.status(200).render("profilePage", payload);
@@ -45,8 +46,9 @@ async function getPayload(username, userLoggedIn) {
     return {
         pageTitle: user.username,
         userLoggedIn: userLoggedIn,
-        userLoggedIn: JSON.stringify(userLoggedIn),
-        profileUser: user
+        userLoggedInJs: JSON.stringify(userLoggedIn),
+        profileUser: user,
+        userId: JSON.stringify(user._id)
     }
 }
 

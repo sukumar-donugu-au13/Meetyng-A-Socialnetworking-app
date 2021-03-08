@@ -23,6 +23,11 @@
                 {{#unless profileUser }}
                     <span class="errorMessage">Check the url you are trying to access</span>
                 {{/unless}}
+
+                <script>
+                    var userLoggedIn = {{{ userLoggedInJs }}}
+                    var profileUserId = {{{ userId }}}
+                </script>
                 
                 <div class="profileHeaderContainer">
                     <div class="coverPhotoContainer">
@@ -68,14 +73,18 @@
                         <a href="/profile/{{ profileUser.username }}" class="tab active">
                             <span>Posts</span>
                         </a>
-                    {{/if}}
 
-                    {{#unless false }}
                         <a href="/profile/{{ profileUser.username }}/replies" class="tab">
                             <span>Replies</span>
                         </a>
-                    {{/unless}}
+                    {{/if}}
                 </div>
+
+                <div class="postsContainer"></div>
+
+                {{> createReplyModal }}
+
+                {{> createDeletePostModal }}
             </div>
 
             <div class="col-md-2 col-lg-4">
@@ -88,6 +97,8 @@
     {{> footer }}
 
     <script src="/js/profile.js"></script>
+
+    <script src="/js/common.js"></script>
 </body>
 </html>
 
