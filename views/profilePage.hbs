@@ -69,15 +69,7 @@
                 </div>
 
                 <div class="tabsContainer">
-                    {{#if true }}
-                        <a href="/profile/{{ profileUser.username }}" class="tab active">
-                            <span>Posts</span>
-                        </a>
-
-                        <a href="/profile/{{ profileUser.username }}/replies" class="tab">
-                            <span>Replies</span>
-                        </a>
-                    {{/if}}
+                    <span class="tab active">Posts</span>
                 </div>
 
                 <div class="postsContainer"></div>
@@ -101,5 +93,3 @@
     <script src="/js/common.js"></script>
 </body>
 </html>
-
-{{!-- {{> createTab user=profileUser isSelected=true }} --}}

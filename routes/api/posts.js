@@ -7,7 +7,15 @@ const router = express.Router()
 
 router.get("/", async (req, res, next) => {
     try {
-        var result = await getPosts({});
+        var searchObj = req.query;
+
+        if (searchObj.isReply !== undefined) {
+            var isReply = searchObj.isReply == "true";
+            searchObj.replyTo = { $exists: isReply };
+            delete searchObj.isReply;
+        }
+
+        var result = await getPosts(searchObj);
 
         // console.log(result);
         res.status(200).send(result);

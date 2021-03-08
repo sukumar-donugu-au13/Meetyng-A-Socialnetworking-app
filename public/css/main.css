@@ -330,7 +330,6 @@ button i, button span {
 }
 
 .tabsContainer {
-    display: flex;
     border: 1px solid var(--lightGray);
     flex-shrink: 0;
 }
