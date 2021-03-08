@@ -119,6 +119,16 @@ router.post("/:id/share", async (req, res, next) => {
     }
 })
 
+router.delete("/:id", async (req, res, next) => {
+    try {
+        await Post.findByIdAndDelete(req.params.id);
+        res.sendStatus(202);
+    } catch (err) {
+        console.log(err);
+        res.sendStatus(400);
+    }
+})
+
 async function getPosts(filter) {
     try {
         var post = await Post.find(filter).populate("postedBy").populate("shareData").populate("replyTo").sort({ "createdAt": -1 });

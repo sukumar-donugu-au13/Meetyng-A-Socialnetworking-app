@@ -103,13 +103,13 @@ $(document).on("click", ".commentButton", (event) => {
     $('#replyModal').modal('show')
 })
 
-$('#replyModal').on('shown.bs.modal', (event) => {
+$('#replyModal').on('shown.bs.modal', () => {
     $("#closeButton, .close").click(() => {
         $('#replyModal').modal('hide')
     })
 })
 
-$('#replyModal').on('hidden.bs.modal', (event) => {
+$('#replyModal').on('hidden.bs.modal', () => {
     $("#originalPostContainer").html("");
 })
 
@@ -120,6 +120,32 @@ $(document).on("click", ".post", (event) => {
     if (postId !== undefined && !element.is("button")) {
         window.location.href = `/posts/${postId}`;
     }
+})
+
+$(document).on("click", "#deleteButton", (event) => {
+    var button = $(event.target);
+    var postId = getPostIdFromElement(button);
+    $("#deletePostButton").data("id", postId);
+
+    $('#deletePostModal').modal('show');
+})
+
+$('#deletePostModal').on('shown.bs.modal', () => {
+    $("#delCloseButton, .close").click(() => {
+        $('#deletePostModal').modal('hide')
+    })
+})
+
+$("#deletePostButton").click((event) => {
+    var postId = $(event.target).data("id");
+
+    $.ajax({
+        url: `/api/posts/${postId}`,
+        type: "DELETE",
+        success: () => {
+            location.reload();
+        }
+    })
 })
 
 function getPostIdFromElement(element) {
@@ -167,6 +193,13 @@ function createPostHtml(postData) {
                     </div>`
     }
 
+    var buttons = "";
+    if (postData.postedBy._id == userLoggedIn._id) {
+        buttons = `<button id="deleteButton" data-id="${postData._id} data-toggle="modal" data-target="#deletedPostModal">
+                    <i class="fas fa-times"></i>
+                </button>`
+    }
+
     return `<div class="post" data-id="${postData._id}">
                 <div class="postActionContainer">
                     ${shareText}
@@ -177,9 +210,10 @@ function createPostHtml(postData) {
                     </div>
                     <div class="postContentContainer">
                         <div class="header">
-                            <a href="/profile/${postedBy.username} class="displayName">${displayName}</a>
+                            <a href="/profile/${postedBy.username}" class="displayName">${displayName}</a>
                             <span class="username">@${postedBy.username}</span>
                             <span class="date">${timestamp}</span>
+                            ${buttons}
                         </div>
                         ${replyFlag}
                         <div class="postBody">

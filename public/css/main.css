@@ -249,6 +249,14 @@ button i, button span {
     text-decoration: none;
 }
 
+.postContentContainer .header {
+    display: flex;
+}
+
+.postContentContainer .header .date {
+    flex: 1;
+}
+
 .errorMessage {
     padding: var(--spacing);
 }
