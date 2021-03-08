@@ -3,4 +3,3 @@ $(document).ready(() => {
         outputPosts(results, $(".postsContainer"));
     })
 })
-

@@ -7,11 +7,12 @@ const createError = require("http-errors");
 const session = require("express-session");
 
 require("dotenv").config();
-require("./helpers/MongoConnect");
+require("./helpers/mongoConnect");
 
-const loginRoute = require("./routes/LoginRoute");
-const registerRoute = require("./routes/RegisterRoute");
+const loginRoute = require("./routes/loginRoute");
+const registerRoute = require("./routes/registerRoute");
 const logoutRoute = require("./routes/logoutRoute");
+const postRoute = require("./routes/postRoute");
 
 const postApiRoute = require("./routes/api/posts");
 const profileRoute = require("./routes/profileRoute");
@@ -57,6 +58,7 @@ hbs.registerHelper("when", (operand_1, operator, operand_2, options) => {
 app.use("/login", loginRoute);
 app.use("/register", registerRoute);
 app.use("/logout", logoutRoute);
+app.use("/posts", requireLogin, postRoute);
 
 app.use("/api/posts", postApiRoute);
 app.use("/profile", requireLogin, profileRoute);

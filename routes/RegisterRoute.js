@@ -2,8 +2,8 @@ const express = require("express");
 
 const router = express.Router();
 
-const User = require("../schema/UserSchema");
-const { schema } = require("../validation/UserValidation");
+const User = require("../schema/userSchema");
+const { schema } = require("../validation/userValidation");
 
 router.get("/", (req, res) => {
     res.status(200).render("register");

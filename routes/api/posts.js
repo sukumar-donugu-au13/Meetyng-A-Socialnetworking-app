@@ -1,7 +1,7 @@
 const express = require("express");
 
-const User = require("../../schema/UserSchema");
-const Post = require("../../schema/PostSchema");
+const User = require("../../schema/userSchema");
+const Post = require("../../schema/postSchema");
 
 const router = express.Router()
 
@@ -20,11 +20,22 @@ router.get("/:id", async (req, res, next) => {
     try {
         var postId = req.params.id;
 
-        var result = await getPosts({ _id: postId });
+        var postData = await getPosts({ _id: postId });
 
-        result = result[0];
-        // console.log(result);
-        res.status(200).send(result);
+        postData = postData[0];
+        // console.log(postData);
+
+        var results = {
+            postData: postData
+        }
+
+        if (postData.replyTo !== undefined) {
+            results.replyTo = postData.replyTo;
+        }
+
+        results.replies = await getPosts({ replyTo: postId });
+
+        res.status(200).send(results);
     } catch (err) {
         console.log(err);
         res.status(400);

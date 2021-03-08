@@ -1,7 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
 
-const User = require("../schema/UserSchema");
+const User = require("../schema/userSchema");
 const { logSchema } = require("../validation/loginValidation");
 
 const router = express.Router()
