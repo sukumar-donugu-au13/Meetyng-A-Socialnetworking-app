@@ -1,6 +1,7 @@
-const express = require("express");
+require("babel-polyfill");
+import express from "express";
 
-const User = require("../schema/userSchema");
+import User from "../schema/userSchema";
 
 const router = express.Router();
 
@@ -41,4 +42,4 @@ async function getPayload(username, userLoggedIn) {
     }
 }
 
-module.exports = router;
+export default router;

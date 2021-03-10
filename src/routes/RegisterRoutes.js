@@ -1,9 +1,10 @@
-const express = require("express");
+require("babel-polyfill");
+import express from "express";
 
 const router = express.Router();
 
-const User = require("../schema/userSchema");
-const { schema } = require("../validation/userValidation");
+import User from "../schema/userSchema";
+import { schema } from "../validation/userValidation";
 
 router.get("/", (req, res) => {
     res.status(200).render("register");
@@ -54,4 +55,4 @@ router.post("/", async (req, res, next) => {
 });
 
 
-module.exports = router;
+export default router;

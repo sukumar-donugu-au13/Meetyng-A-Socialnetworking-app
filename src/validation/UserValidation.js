@@ -1,6 +1,6 @@
-const Joi = require("joi");
+import Joi from "joi";
 
-const schema = Joi.object({
+export const schema = Joi.object({
     firstName: Joi.string()
         .trim()
         .label("First Name")
@@ -31,7 +31,3 @@ const schema = Joi.object({
         .label('Confirm password')
         .messages({ 'any.only': '{{#label}} does not match' }),
 });
-
-module.exports = {
-    schema
-}

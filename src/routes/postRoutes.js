@@ -1,4 +1,4 @@
-const express = require("express");
+import express from "express";
 
 const router = express.Router()
 
@@ -13,4 +13,4 @@ router.get("/:id", (req, res, next) => {
     res.status(200).render("postPage", payload);
 })
 
-module.exports = router;
+export default router;

@@ -1,5 +1,6 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
+require("babel-polyfill");
+import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
 
 const Schema = mongoose.Schema;
 
@@ -13,10 +14,7 @@ const UserSchema = new Schema({
         type: String,
         default: "https://res.cloudinary.com/imgvidcloud/image/upload/v1615371489/profilePic.png"
     },
-    coverImg: {
-        type: String,
-        default: "https://res.cloudinary.com/imgvidcloud/image/upload/v1614486546/samples/landscapes/landscape-panorama.jpg/"
-    },
+    coverImg: { type: String },
     profilePicDetails: [{ profile_url: String, cloud_id: String }],
     coverImgDetails: [{ cover_url: String, cloud_id: String }],
     likes: [{ type: Schema.Types.ObjectId, ref: "Post" }],
@@ -37,4 +35,4 @@ UserSchema.pre("save", async function (next) {
     }
 })
 
-module.exports = mongoose.model("User", UserSchema);
+export default mongoose.model("User", UserSchema);

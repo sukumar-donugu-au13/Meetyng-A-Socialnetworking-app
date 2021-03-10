@@ -1,5 +1,5 @@
-const multer = require("multer");
-const path = require("path");
+import multer from "multer";
+import path from "path";
 
 var fileStorage = multer.diskStorage({
     destination: (req, file, callback) => {
@@ -24,4 +24,4 @@ var upload = multer({
     fileFilter: filterImage
 });
 
-module.exports = upload;
+export default upload;

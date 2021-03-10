@@ -1,8 +1,10 @@
-const express = require("express");
-const bcrypt = require("bcryptjs");
+require("babel-polyfill");
+import express from "express";
 
-const User = require("../schema/userSchema");
-const { logSchema } = require("../validation/loginValidation");
+import bcrypt from "bcryptjs";
+
+import User from "../schema/userSchema";
+import { logSchema } from "../validation/loginValidation";
 
 const router = express.Router()
 
@@ -50,4 +52,4 @@ router.post("/", async (req, res, next) => {
     }
 })
 
-module.exports = router;
+export default router;

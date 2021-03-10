@@ -1,23 +1,24 @@
-const path = require("path");
-const express = require("express");
-const helmet = require("helmet");
-const morgan = require("morgan");
-const hbs = require("hbs");
-const createError = require("http-errors");
-const session = require("express-session");
+require("babel-polyfill");
+import path from "path";
+import express from "express";
+import helmet from "helmet";
+import morgan from "morgan";
+import hbs from "hbs";
+import createError from "http-errors";
+import session from "express-session";
 
 require("dotenv").config();
 require("./helpers/mongoConnect");
 
-const loginRoute = require("./routes/loginRoutes");
-const registerRoute = require("./routes/registerRoutes");
-const logoutRoute = require("./routes/logoutRoutes");
-const postRoute = require("./routes/postRoutes");
-const profileRoute = require("./routes/profileRoutes");
+import loginRoute from "./routes/loginRoutes";
+import registerRoute from "./routes/registerRoutes";
+import logoutRoute from "./routes/logoutRoutes";
+import postRoute from "./routes/postRoutes";
+import profileRoute from "./routes/profileRoutes";
 
-const postApiRoute = require("./routes/api/posts");
-const usersApiRoute = require("./routes/api/users");
-const requireLogin = require("./Middleware");
+import postApiRoute from "./routes/api/posts";
+import usersApiRoute from "./routes/api/users";
+import requireLogin from "./Middleware";
 
 const app = express();
 const PORT = process.env.PORT || 5000;

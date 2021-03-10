@@ -1,7 +1,8 @@
-const express = require("express");
+require("babel-polyfill");
+import express from "express";
 
-const User = require("../../schema/userSchema");
-const Post = require("../../schema/postSchema");
+import User from "../../schema/userSchema";
+import Post from "../../schema/postSchema";
 
 const router = express.Router()
 
@@ -155,4 +156,4 @@ async function getPosts(filter) {
     }
 }
 
-module.exports = router;
+export default router;

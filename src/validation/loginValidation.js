@@ -1,6 +1,6 @@
-const Joi = require("joi");
+import Joi from "joi";
 
-const logSchema = Joi.object({
+export const logSchema = Joi.object({
     logUsername: Joi.string()
         .trim()
         .alphanum()
@@ -13,7 +13,3 @@ const logSchema = Joi.object({
         .label("password")
         .required(),
 });
-
-module.exports = {
-    logSchema
-}

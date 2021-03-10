@@ -99,12 +99,13 @@
                     </div>
                     <div class="profileButtonsContainer" data-user={{ profileUser._id }}>
                         {{#when profileUser._id 'noteq' userLoggedIn._id }}
-                            
+
                             {{#ifFollowButton ../profileUser ../userLoggedIn }}
                                 <button class="followButton following">Following</button>
                             {{else}}
                                 <button class="followButton">Follow</button>
                             {{/ifFollowButton}}
+                            
                         {{/when}}
                     </div>
                     <div class="userDetailsContainer">

@@ -1,10 +1,10 @@
-const express = require("express");
-const fs = require("fs");
+require("babel-polyfill");
+import express from "express";
+import fs from "fs";
 
-const User = require("../../schema/userSchema");
-const Post = require("../../schema/postSchema");
-const upload = require("../../helpers/multer");
-const cloudinary = require("../../helpers/Cloudinary");
+import User from "../../schema/userSchema";
+import upload from "../../helpers/multer";
+import cloudinary from "../../helpers/Cloudinary";
 
 const router = express.Router();
 
@@ -27,7 +27,7 @@ router.put("/:userId/follow", async (req, res, next) => {
 
         res.status(200).send(req.session.user);
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         res.sendStatus(400);
     }
 })
@@ -58,7 +58,7 @@ router.post("/profilePicture", upload.single('croppedImage'), async (req, res, n
         res.sendStatus(204);
 
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         res.sendStatus(400);
     }
 })
@@ -89,9 +89,9 @@ router.post("/coverPhoto", upload.single('croppedImage'), async (req, res, next)
         res.sendStatus(204);
 
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         res.sendStatus(400);
     }
 })
 
-module.exports = router;
+export default router;
