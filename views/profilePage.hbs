@@ -99,9 +99,6 @@
                     </div>
                     <div class="profileButtonsContainer" data-user={{ profileUser._id }}>
                         {{#when profileUser._id 'noteq' userLoggedIn._id }}
-                            <a class="profileButton" href="/messages/{{ ../profileUser._id }}">
-                                <i class="fas fa-envelope"></i>
-                            </a>
                             
                             {{#ifFollowButton ../profileUser ../userLoggedIn }}
                                 <button class="followButton following">Following</button>
