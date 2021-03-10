@@ -20,8 +20,9 @@ router.get("/", async (req, res, next) => {
         // console.log(result);
         res.status(200).send(result);
     } catch (err) {
-        console.log(err);
-        res.status(400);
+        // console.log(err);
+        res.sendStatus(400);
+        next(err);
     }
 })
 
@@ -46,8 +47,9 @@ router.get("/:id", async (req, res, next) => {
 
         res.status(200).send(results);
     } catch (err) {
-        console.log(err);
-        res.status(400);
+        // console.log(err);
+        res.sendStatus(400);
+        next(err);
     }
 })
 
@@ -77,7 +79,8 @@ router.post("/", async (req, res, next) => {
         res.status(201).send(data);
     } catch (err) {
         // console.log(err);
-        next(err)
+        res.sendStatus(400);
+        next(err);
     }
 })
 
@@ -96,9 +99,9 @@ router.put("/:id/like", async (req, res, next) => {
 
         res.status(200).send(post);
     } catch (err) {
+        // console.log(err);
         res.sendStatus(400);
-        console.log(err);
-        // next(err);
+        next(err);
     }
 })
 
@@ -123,9 +126,9 @@ router.post("/:id/share", async (req, res, next) => {
 
         res.status(200).send(post);
     } catch (err) {
-        console.log(err);
-        res.status(400);
-        // next(err);
+        // console.log(err);
+        res.sendStatus(400);
+        next(err);
     }
 })
 
@@ -134,8 +137,9 @@ router.delete("/:id", async (req, res, next) => {
         await Post.findByIdAndDelete(req.params.id);
         res.sendStatus(202);
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         res.sendStatus(400);
+        next(err);
     }
 })
 
@@ -146,7 +150,8 @@ async function getPosts(filter) {
         results = await User.populate(results, { path: "replyTo.postedBy" });
         return await User.populate(results, { path: "shareData.postedBy" });
     } catch (err) {
-        console.log(err);
+        // console.log(err);
+        res.sendStatus(400);
     }
 }
 

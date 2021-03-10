@@ -1,7 +1,5 @@
 const express = require("express");
 
-const User = require("../schema/userSchema");
-
 const router = express.Router()
 
 router.get("/:id", (req, res, next) => {

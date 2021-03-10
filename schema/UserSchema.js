@@ -13,7 +13,10 @@ const UserSchema = new Schema({
         type: String,
         default: "https://res.cloudinary.com/imgvidcloud/image/upload/v1615371489/profilePic.png"
     },
-    coverImg: { type: String },
+    coverImg: {
+        type: String,
+        default: "https://res.cloudinary.com/imgvidcloud/image/upload/v1614486546/samples/landscapes/landscape-panorama.jpg/"
+    },
     profilePicDetails: [{ profile_url: String, cloud_id: String }],
     coverImgDetails: [{ cover_url: String, cloud_id: String }],
     likes: [{ type: Schema.Types.ObjectId, ref: "Post" }],
