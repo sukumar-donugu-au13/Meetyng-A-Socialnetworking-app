@@ -9,11 +9,12 @@ const session = require("express-session");
 require("dotenv").config();
 require("./helpers/mongoConnect");
 
-const loginRoute = require("./routes/loginRoute");
-const registerRoute = require("./routes/registerRoute");
-const logoutRoute = require("./routes/logoutRoute");
-const postRoute = require("./routes/postRoute");
-const profileRoute = require("./routes/profileRoute");
+const loginRoute = require("./routes/loginRoutes");
+const registerRoute = require("./routes/registerRoutes");
+const logoutRoute = require("./routes/logoutRoutes");
+const postRoute = require("./routes/postRoutes");
+const profileRoute = require("./routes/profileRoutes");
+const searchRoute = require("./routes/searchRoutes")
 
 const postApiRoute = require("./routes/api/posts");
 const usersApiRoute = require("./routes/api/users");
@@ -56,10 +57,6 @@ hbs.registerHelper("when", (operand_1, operator, operand_2, options) => {
     return options.inverse(this);
 });
 
-// hbs.registerHelper("log", function (something) {
-//     console.log(something);
-// });
-
 hbs.registerHelper('ifFollowButton', function (profileUser, userLoggedIn, options) {
     var result = userLoggedIn.following && userLoggedIn.following.includes(profileUser._id.toString());
 
@@ -83,6 +80,7 @@ app.use("/register", registerRoute);
 app.use("/logout", logoutRoute);
 app.use("/posts", requireLogin, postRoute);
 app.use("/profile", requireLogin, profileRoute);
+app.use("/search", requireLogin, searchRoute);
 
 app.use("/api/posts", postApiRoute);
 app.use("/api/users", usersApiRoute);

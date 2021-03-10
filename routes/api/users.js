@@ -1,5 +1,4 @@
 const express = require("express");
-const path = require("path");
 const fs = require("fs");
 
 const User = require("../../schema/userSchema");
@@ -8,6 +7,29 @@ const upload = require("../../helpers/multer");
 const cloudinary = require("../../helpers/Cloudinary");
 
 const router = express.Router();
+
+router.get("/", async (req, res, next) => {
+    try {
+        var searchObj = req.query;
+
+        if (req.query.search !== undefined) {
+            searchObj = {
+                $or: [
+                    { firstName: { $regex: req.query.search, $options: "i" } },
+                    { lastName: { $regex: req.query.search, $options: "i" } },
+                    { username: { $regex: req.query.search, $options: "i" } }
+                ]
+            }
+        }
+
+        const results = await User.find(searchObj);
+        res.status(200).send(results);
+
+    } catch (err) {
+        console.log(err);
+        res.sendStatus(400);
+    }
+})
 
 router.put("/:userId/follow", async (req, res, next) => {
     try {

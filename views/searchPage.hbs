@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {{> head }}
+    <link rel="stylesheet" href="/css/main.css">
+    <title>{{ pageTitle }}</title>
+</head>
+<body class="body">
+    <script>
+        var userLoggedIn = {{{ userLoggedInJs }}};
+    </script>
+    <div class="wrapper">
+        <div class="row">
+            {{> nav }}
+
+            <div class="mainSectionContainer col-10 col-md-8 col-lg-6">
+                <div class="titleContainer">
+                    <h1>{{ pageTitle }}</h1>
+                </div>
+
+                <div class="searchBarContainer">
+                    <i class="fas fa-search"></i>
+                    <input id="searchBox" type="text" name="searchBox" placeholder="Search for Users">
+                </div>
+
+                <div class="tabsContainer">
+                    <span class="tab active">Users</span>
+                </div>
+
+                <div class="resultsContainer"></div>
+
+                {{> createReplyModal }}
+
+                {{> createDeletePostModal }}
+            </div>
+
+            <div class="col-md-2 col-lg-4">
+                
+            </div>
+        </div>
+    </div>
+
+    <script src="https://kit.fontawesome.com/928db4b75b.js" crossorigin="anonymous"></script>
+    {{> footer }}
+
+    <script src="/js/search.js"></script>
+
+    <script src="/js/common.js"></script>
+</body>
+</html>
