@@ -1,3 +1,5 @@
+var cropper;
+
 $("#postTextarea, #replyTextarea").keyup(event => {
     var textbox = $(event.target);
     var value = textbox.val().trim();
@@ -145,6 +147,145 @@ $("#deletePostButton").click((event) => {
         success: () => {
             location.reload();
         }
+    })
+})
+
+$(document).on("click", ".followButton", (event) => {
+    var button = $(event.target);
+    var userId = button.parent().data().user;
+
+    $.ajax({
+        url: `/api/users/${userId}/follow`,
+        type: "PUT",
+        success: (data, status, xhr) => {
+            if (xhr.status == 404) {
+                alert("User not found");
+                return
+            }
+
+            var difference = 1;
+            if (data.following && data.following.includes(userId)) {
+                button.addClass("following");
+                button.text("Following");
+            } else {
+                button.removeClass("following");
+                button.text("Follow");
+                difference = -1
+            }
+
+            var followersLable = $("#followersValue");
+            if (followersLable.length != 0) {
+                var followersText = followersLable.text();
+                followersText = parseInt(followersText);
+                followersLable.text(followersText + difference);
+            }
+        }
+    })
+});
+
+$(".profilePictureButton").click(() => {
+    $('#imageUploadModal').modal('show');
+})
+
+$('#imageUploadModal').on('shown.bs.modal', () => {
+    $("#imgCloseButton, .close").click(() => {
+        $('#imageUploadModal').modal('hide')
+    })
+})
+
+$("#filePhoto").change(function () {
+    if (this.files && this.files[0]) {
+        var reader = new FileReader();
+        reader.onload = (event) => {
+            var image = document.getElementById("imagePreview");
+            image.src = event.target.result;
+
+            if (cropper !== undefined) {
+                cropper.destroy();
+            }
+
+            cropper = new Cropper(image, {
+                aspectRatio: 1 / 1,
+                background: false
+            })
+        }
+        reader.readAsDataURL(this.files[0]);
+    }
+})
+
+$("#imageUploadButton").click(() => {
+    var canvas = cropper.getCroppedCanvas();
+
+    if (canvas == null) {
+        alert("Error!! Make sure it is an png, jpg or jpeg image file.");
+        return
+    }
+
+    canvas.toBlob((blob) => {
+        var formData = new FormData();
+        formData.append("croppedImage", blob);
+
+        $.ajax({
+            url: "/api/users/profilePicture",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: () => location.reload()
+        })
+    })
+})
+
+$(".coverPhotoButton").click(() => {
+    $('#coverPhotoUploadModal').modal('show');
+})
+
+$('#coverPhotoUploadModal').on('shown.bs.modal', () => {
+    $("#photoCloseButton, .close").click(() => {
+        $('#coverPhotoUploadModal').modal('hide')
+    })
+})
+
+$("#coverPhoto").change(function () {
+    if (this.files && this.files[0]) {
+        var reader = new FileReader();
+        reader.onload = (event) => {
+            var image = document.getElementById("coverPreview");
+            image.src = event.target.result;
+
+            if (cropper !== undefined) {
+                cropper.destroy();
+            }
+
+            cropper = new Cropper(image, {
+                aspectRatio: 16 / 9,
+                background: false
+            })
+        }
+        reader.readAsDataURL(this.files[0]);
+    }
+})
+
+$("#coverPhotoUploadButton").click(() => {
+    var canvas = cropper.getCroppedCanvas();
+
+    if (canvas == null) {
+        alert("Error!! Make sure it is an png, jpg or jpeg image file.");
+        return
+    }
+
+    canvas.toBlob((blob) => {
+        var formData = new FormData();
+        formData.append("croppedImage", blob);
+
+        $.ajax({
+            url: "/api/users/coverPhoto",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: () => location.reload()
+        })
     })
 })
 

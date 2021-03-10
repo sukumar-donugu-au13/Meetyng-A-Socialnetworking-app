@@ -13,9 +13,10 @@ const loginRoute = require("./routes/loginRoute");
 const registerRoute = require("./routes/registerRoute");
 const logoutRoute = require("./routes/logoutRoute");
 const postRoute = require("./routes/postRoute");
+const profileRoute = require("./routes/profileRoute");
 
 const postApiRoute = require("./routes/api/posts");
-const profileRoute = require("./routes/profileRoute");
+const usersApiRoute = require("./routes/api/users");
 const requireLogin = require("./Middleware");
 
 const app = express();
@@ -55,13 +56,36 @@ hbs.registerHelper("when", (operand_1, operator, operand_2, options) => {
     return options.inverse(this);
 });
 
+// hbs.registerHelper("log", function (something) {
+//     console.log(something);
+// });
+
+hbs.registerHelper('ifFollowButton', function (profileUser, userLoggedIn, options) {
+    var result = userLoggedIn.following && userLoggedIn.following.includes(profileUser._id.toString());
+
+    if (result) {
+        return options.fn(this);
+    } else {
+        return options.inverse(this);
+    }
+});
+
+hbs.registerHelper("setVar", function (varName, varValue, options) {
+    options.data.root[varName] = varValue;
+});
+
+hbs.registerHelper('json', function (context) {
+    return JSON.stringify(context);
+});
+
 app.use("/login", loginRoute);
 app.use("/register", registerRoute);
 app.use("/logout", logoutRoute);
 app.use("/posts", requireLogin, postRoute);
+app.use("/profile", requireLogin, profileRoute);
 
 app.use("/api/posts", postApiRoute);
-app.use("/profile", requireLogin, profileRoute);
+app.use("/api/users", usersApiRoute);
 
 app.get("/", requireLogin, (req, res, next) => {
     var payload = {

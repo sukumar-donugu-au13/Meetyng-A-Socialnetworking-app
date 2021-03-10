@@ -96,6 +96,7 @@ router.put("/:id/like", async (req, res, next) => {
 
         res.status(200).send(post);
     } catch (err) {
+        res.sendStatus(400);
         console.log(err);
         // next(err);
     }
@@ -140,10 +141,10 @@ router.delete("/:id", async (req, res, next) => {
 
 async function getPosts(filter) {
     try {
-        var post = await Post.find(filter).populate("postedBy").populate("shareData").populate("replyTo").sort({ "createdAt": -1 });
+        var results = await Post.find(filter).populate("postedBy").populate("shareData").populate("replyTo").sort({ "createdAt": -1 });
 
-        post = await User.populate(post, { path: "replyTo.postedBy" });
-        return await User.populate(post, { path: "shareData.postedBy" });
+        results = await User.populate(results, { path: "replyTo.postedBy" });
+        return await User.populate(results, { path: "shareData.postedBy" });
     } catch (err) {
         console.log(err);
     }

@@ -30,6 +30,7 @@ a:hover {
 .body {
     width: 100vw;
     height: 100vh;
+    overflow-x: hidden;
 }
 
 h1 {
@@ -261,7 +262,7 @@ button i, button span {
     padding: var(--spacing);
 }
 
-.profileHeaderContainer .coverPhotoContainer {
+.coverPhotoSection {
     height: 180px;
     background-color: var(--blue);
     position: relative;
@@ -273,6 +274,9 @@ button i, button span {
     margin-left: var(--spacing);
     position: absolute;
     bottom: -66px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .profileHeaderContainer .userImageContainer img {
@@ -330,6 +334,7 @@ button i, button span {
 }
 
 .tabsContainer {
+    display: flex;
     border: 1px solid var(--lightGray);
     flex-shrink: 0;
 }
@@ -354,3 +359,58 @@ button i, button span {
     color: var(--blue);
     background-color: var(--blueBackground);
 }
+
+.noResults {
+    padding: var(--spacing);
+}
+
+.profilePictureButton, .coverPhotoButton {
+    position: absolute;
+    font-size: 50px;
+    color: rgba(245, 239, 239, 0.534);
+    display: none;
+}
+
+.userImageContainer:hover .profilePictureButton, .coverPhotoSection:hover .coverPhotoButton {
+    display: block;
+}
+
+.coverPhotoContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.coverPhotoContainer img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#imagePreview, #coverPreview {
+    width: 100%;
+    display: block;
+    max-width: 100%;
+}
+
+/* .resultsContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.resultsContainer .user {
+    width: 100%;
+    padding: var(--spacing);
+    display: flex;
+    border-bottom: 1px solid var(--lightGray);
+}
+
+.resultsContainer .user .header {
+    display: flex;
+}
+
+.user .userDetailsContainer {
+    flex: 1;
+    padding: 0 var(--spacing);
+} */

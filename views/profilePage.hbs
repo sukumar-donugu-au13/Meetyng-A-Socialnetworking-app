@@ -8,13 +8,7 @@
 <body class="body">
     <div class="wrapper">
         <div class="row">
-            <nav class="col-2">
-                <a class="blue" href="/"><i class="fab fa-meetup"></i></a>
-                <a href="/"><i class="fas fa-home"></i></a>
-                <a href="/search"><i class="fas fa-search"></i></a>
-                <a href="/profile"><i class="fas fa-user"></i></a>
-                <a href="/logout"><i class="fas fa-sign-out-alt"></i></a>
-            </nav>
+            {{> nav }}
 
             <div class="mainSectionContainer col-10 col-md-8 col-lg-6">
                 <div class="titleContainer">
@@ -28,20 +22,92 @@
                     var userLoggedIn = {{{ userLoggedInJs }}}
                     var profileUserId = {{{ userId }}}
                 </script>
+
+                {{setVar "followersCount" profileUser.followers.length }}
+                {{setVar "followingCount" profileUser.following.length }}
                 
                 <div class="profileHeaderContainer">
-                    <div class="coverPhotoContainer">
+                    <div class="coverPhotoSection">
+                        <div class="coverPhotoContainer">
+                            {{#if profileUser.coverImg }}
+                                <img src={{ profileUser.coverImg }} alt="User's cover photo">
+                            {{/if}} 
 
+                            {{#when profileUser._id 'eq' userLoggedIn._id }}
+                                <button class="coverPhotoButton" data-toggle="modal" data-target="coverPhotoUploadModal">
+                                    <i class="fas fa-camera"></i>
+                                </button>
+                            {{/when}}
+                        </div>
+
+                        <div class="modal fade" id="coverPhotoUploadModal" tabindex="-1" role="dialog" aria-labelledby="coverPhotoUploadModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="coverPhotoUploadModalLabel">Upload a new cover photo</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <input id="coverPhoto" type="file" name="coverPhoto">
+                                        <div class="imagePreviewContainer">
+                                            <img id="coverPreview">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button id="photoCloseButton" type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                        <button id="coverPhotoUploadButton" type="button" class="btn btn-primary">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
                         <div class="userImageContainer">
                             <img src={{ profileUser.profilePic }} alt="User profile image">
+
+                            {{#when profileUser._id 'eq' userLoggedIn._id }}
+                                <button class="profilePictureButton" data-toggle="modal" data-target="imageUploadModal">
+                                    <i class="fas fa-camera"></i>
+                                </button>
+                            {{/when}}
                         </div>
+
+                        <div class="modal fade" id="imageUploadModal" tabindex="-1" role="dialog" aria-labelledby="imageUploadModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="imageUploadModalLabel">Upload a profile picture</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <input id="filePhoto" type="file" name="filePhoto">
+                                        <div class="imagePreviewContainer">
+                                            <img id="imagePreview">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button id="imgCloseButton" type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                        <button id="imageUploadButton" type="button" class="btn btn-primary">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
-                    <div class="profileButtonsContainer">
-                        {{#when profileUser._id "noteq" userLoggedIn._id }}
-                            <a class="profileButton" href="/messages{{ profileUser._id }}">
+                    <div class="profileButtonsContainer" data-user={{ profileUser._id }}>
+                        {{#when profileUser._id 'noteq' userLoggedIn._id }}
+                            <a class="profileButton" href="/messages/{{ ../profileUser._id }}">
                                 <i class="fas fa-envelope"></i>
                             </a>
-                            {{> createFollowButton user=profileUser isFollowing=true }}
+                            
+                            {{#ifFollowButton ../profileUser ../userLoggedIn }}
+                                <button class="followButton following">Following</button>
+                            {{else}}
+                                <button class="followButton">Follow</button>
+                            {{/ifFollowButton}}
                         {{/when}}
                     </div>
                     <div class="userDetailsContainer">
@@ -56,12 +122,11 @@
                         </span>
 
                         <div class="followersContainer">
-                            <a href="/profile/{{ profileUser.username }}/following">
-                                <span class="value">0</span>
+                            <a href="#">
+                                <span class="value">{{ followingCount }}</span>
                                 <span>Following</span>
-                            </a>
-                            <a href="/profile/{{ profileUser.username }}/followers">
-                                <span class="value">0</span>
+                            <a href="#">
+                                <span id="followersValue" class="value">{{ followersCount }}</span>
                                 <span>Followers</span>
                             </a>
                         </div>
@@ -77,15 +142,14 @@
                 {{> createReplyModal }}
 
                 {{> createDeletePostModal }}
+
             </div>
 
             <div class="col-md-2 col-lg-4">
-                <span>Third column</span>
             </div>
         </div>
     </div>
 
-    <script src="https://kit.fontawesome.com/928db4b75b.js" crossorigin="anonymous"></script>
     {{> footer }}
 
     <script src="/js/profile.js"></script>

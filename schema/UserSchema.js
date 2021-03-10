@@ -9,9 +9,17 @@ const UserSchema = new Schema({
     username: { type: String, required: true, trim: true, unique: true },
     email: { type: String, required: true, trim: true, unique: true },
     password: { type: String, required: true },
-    profilePic: { type: String, default: "/images/profilePic.png" },
+    profilePic: {
+        type: String,
+        default: "https://res.cloudinary.com/imgvidcloud/image/upload/v1615371489/profilePic.png"
+    },
+    coverImg: { type: String },
+    profilePicDetails: [{ profile_url: String, cloud_id: String }],
+    coverImgDetails: [{ cover_url: String, cloud_id: String }],
     likes: [{ type: Schema.Types.ObjectId, ref: "Post" }],
     share: [{ type: Schema.Types.ObjectId, ref: "Post" }],
+    following: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    followers: [{ type: Schema.Types.ObjectId, ref: "User" }]
 }, { timestamps: true });
 
 UserSchema.pre("save", async function (next) {
