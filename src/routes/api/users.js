@@ -4,7 +4,7 @@ import fs from "fs";
 
 import User from "../../schema/UserSchema";
 import upload from "../../helpers/multer";
-import cloudinary from "../../helpers/Cloudinary";
+import cloud from "../../helpers/Cloudinary";
 
 const router = express.Router();
 
@@ -41,7 +41,7 @@ router.post("/profilePicture", upload.single('croppedImage'), async (req, res, n
 
         var tempPath = req.file.path;
 
-        const newPath = await cloudinary.uploader.upload(tempPath);
+        const newPath = await cloud.uploader.upload(tempPath);
 
         req.session.user = await User.findOneAndUpdate({ "_id": req.session.user._id }, {
             "$set": {
@@ -72,7 +72,7 @@ router.post("/coverPhoto", upload.single('croppedImage'), async (req, res, next)
 
         var tempPath = req.file.path;
 
-        const newPath = await cloudinary.uploader.upload(tempPath);
+        const newPath = await cloud.uploader.upload(tempPath);
 
         req.session.user = await User.findOneAndUpdate({ "_id": req.session.user._id }, {
             "$set": {
