@@ -4,7 +4,7 @@ import fs from "fs";
 
 import User from "../../schema/userSchema";
 import upload from "../../helpers/multer";
-import cloudinary from "../../helpers/Cloudinary";
+import cloudinary from "../../helpers/cloudinary";
 
 const router = express.Router();
 

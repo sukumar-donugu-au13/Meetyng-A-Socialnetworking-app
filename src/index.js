@@ -18,7 +18,7 @@ import logoutRoute from "./routes/logoutRoutes";
 
 import postApiRoute from "./routes/api/posts";
 import usersApiRoute from "./routes/api/users";
-import requireLogin from "./Middleware";
+import requireLogin from "./middleware";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
