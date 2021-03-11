@@ -1,8 +1,8 @@
 require("babel-polyfill");
 import express from "express";
 
-import User from "../../schema/userSchema";
-import Post from "../../schema/postSchema";
+import User from "../../schema/UserSchema";
+import Post from "../../schema/PostSchema";
 
 const router = express.Router()
 

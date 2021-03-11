@@ -1,7 +1,7 @@
 require("babel-polyfill");
 import express from "express";
 
-import User from "../schema/userSchema";
+import User from "../schema/UserSchema";
 
 const router = express.Router();
 

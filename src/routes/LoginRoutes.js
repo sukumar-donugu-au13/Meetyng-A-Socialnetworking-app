@@ -3,7 +3,7 @@ import express from "express";
 
 import bcrypt from "bcryptjs";
 
-import User from "../schema/userSchema";
+import User from "../schema/UserSchema";
 import { logSchema } from "../validation/loginValidation";
 
 const router = express.Router()

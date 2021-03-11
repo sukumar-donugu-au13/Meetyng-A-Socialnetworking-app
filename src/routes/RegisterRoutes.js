@@ -3,8 +3,8 @@ import express from "express";
 
 const router = express.Router();
 
-import User from "../schema/userSchema";
-import { schema } from "../validation/userValidation";
+import User from "../schema/UserSchema";
+import { schema } from "../validation/UserValidation";
 
 router.get("/", (req, res) => {
     res.status(200).render("register");

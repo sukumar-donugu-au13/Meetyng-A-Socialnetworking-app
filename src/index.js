@@ -8,17 +8,17 @@ import createError from "http-errors";
 import session from "express-session";
 
 // require("dotenv").config();
-require("./helpers/mongoConnect");
+require("./helpers/MongoConnect");
 
-import profileRoute from "./routes/profileRoutes";
-import postRoute from "./routes/postRoutes";
-import registerRoute from "./routes/registerRoutes";
-import loginRoute from "./routes/loginRoutes";
+import loginRoute from "./routes/LoginRoutes";
+import registerRoute from "./routes/RegisterRoutes";
 import logoutRoute from "./routes/logoutRoutes";
+import postRoute from "./routes/postRoutes";
+import profileRoute from "./routes/profileRoutes";
 
 import postApiRoute from "./routes/api/posts";
 import usersApiRoute from "./routes/api/users";
-import requireLogin from "./middleware";
+import requireLogin from "./Middleware";
 
 const app = express();
 const PORT = process.env.PORT || 5000;

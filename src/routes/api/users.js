@@ -2,9 +2,9 @@ require("babel-polyfill");
 import express from "express";
 import fs from "fs";
 
-import User from "../../schema/userSchema";
+import User from "../../schema/UserSchema";
 import upload from "../../helpers/multer";
-import cloudinary from "../../helpers/cloudinary";
+import cloudinary from "../../helpers/Cloudinary";
 
 const router = express.Router();
 
