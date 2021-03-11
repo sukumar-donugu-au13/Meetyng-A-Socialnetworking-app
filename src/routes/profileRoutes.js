@@ -11,7 +11,7 @@ router.get("/:username", async (req, res, next) => {
 
         res.status(200).render("profilePage", payload);
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         next(err);
     }
 });

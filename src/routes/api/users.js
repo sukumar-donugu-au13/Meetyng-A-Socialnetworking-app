@@ -29,6 +29,7 @@ router.put("/:userId/follow", async (req, res, next) => {
     } catch (err) {
         // console.log(err);
         res.sendStatus(400);
+        next(err);
     }
 })
 
@@ -60,6 +61,7 @@ router.post("/profilePicture", upload.single('croppedImage'), async (req, res, n
     } catch (err) {
         // console.log(err);
         res.sendStatus(400);
+        next(err);
     }
 })
 
@@ -91,6 +93,7 @@ router.post("/coverPhoto", upload.single('croppedImage'), async (req, res, next)
     } catch (err) {
         // console.log(err);
         res.sendStatus(400);
+        next(err);
     }
 })
 

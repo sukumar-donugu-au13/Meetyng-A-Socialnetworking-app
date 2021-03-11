@@ -153,6 +153,7 @@ async function getPosts(filter) {
     } catch (err) {
         // console.log(err);
         res.sendStatus(400);
+        next(err);
     }
 }
 
