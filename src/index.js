@@ -2,12 +2,12 @@ require("babel-polyfill");
 import path from "path";
 import express from "express";
 import helmet from "helmet";
-import morgan from "morgan";
+// import morgan from "morgan";
 import hbs from "hbs";
 import createError from "http-errors";
 import session from "express-session";
 
-require("dotenv").config();
+// require("dotenv").config();
 require("./helpers/mongoConnect");
 
 import loginRoute from "./routes/loginRoutes";
@@ -24,7 +24,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(helmet());
-app.use(morgan("dev"));
+// app.use(morgan("dev"));
 
 app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "/views"));
