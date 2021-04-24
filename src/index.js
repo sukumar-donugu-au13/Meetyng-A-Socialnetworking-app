@@ -7,7 +7,8 @@ import hbs from "hbs";
 import createError from "http-errors";
 import session from "express-session";
 
-// require("dotenv").config();
+import dotenv from "dotenv";
+dotenv.config();
 require("./helpers/MongoConnect");
 
 import loginRoute from "./routes/LoginRoutes";
